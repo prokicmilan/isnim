@@ -16,7 +16,8 @@ public class JednostavanIgrac implements Igrac {
     public void setMaxDepth(int maxDepth) {
         this.maxDepth = maxDepth;
     }
-
+    
+    @Override
     public Move makeMove(Game g) {
         int bestResult = -2000;
         int lastMove = g.getLastMove();

@@ -81,7 +81,7 @@ public class Nim extends java.awt.Frame {
         jPanel1 = new javax.swing.JPanel();
         newGame = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        turnLabel = new javax.swing.JLabel();
         btnPanel = new javax.swing.JPanel();
 
         newGameDialog.setMinimumSize(new java.awt.Dimension(530, 260));
@@ -296,10 +296,20 @@ public class Nim extends java.awt.Frame {
         jLabel7.setText("Igrac 1:");
 
         aiType1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jednostavan igrac", "Alfa beta igrac", "Takmicar" }));
+        aiType1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aiType1ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Igrac 2:");
 
         aiType2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jednostavan igrac", "Alfa beta igrac", "Takmicar" }));
+        aiType2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aiType2ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Dalje");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -316,9 +326,8 @@ public class Nim extends java.awt.Frame {
                 .addContainerGap()
                 .addGroup(computerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                    .addGroup(computerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(computerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(aiType1, 0, 200, Short.MAX_VALUE)
@@ -360,7 +369,7 @@ public class Nim extends java.awt.Frame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Na potezu:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        turnLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         btnPanel.setMinimumSize(new java.awt.Dimension(1061, 302));
         btnPanel.setLayout(new java.awt.GridLayout(10, 10, 30, 5));
@@ -373,7 +382,7 @@ public class Nim extends java.awt.Frame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
                 .addComponent(newGame, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -388,7 +397,7 @@ public class Nim extends java.awt.Frame {
                     .addComponent(newGame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -570,16 +579,45 @@ public class Nim extends java.awt.Frame {
         btnPanel.validate();
         jPanel1.validate();
         pilesDialog.setVisible(false);
-        game = new Game(Arrays.copyOf(board, board.length));
+        playGame();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //napravi objekte odgovarajucih igraca
         computerDialog.setVisible(false);
         populatePilesDialog();
         pilesDialog.pack();
         pilesDialog.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void aiType1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiType1ActionPerformed
+        int index = ((JComboBox) evt.getSource()).getSelectedIndex();
+        switch (index) {
+            case 0:
+                igrac1 = new JednostavanIgrac(difficultyPlayer1);
+                break;
+            case 1:
+                igrac1 = new AlfaBetaIgrac(difficultyPlayer1);
+                break;
+            case 2:
+                igrac1 = new Takmicar();
+                break;
+        }
+    }//GEN-LAST:event_aiType1ActionPerformed
+
+    private void aiType2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiType2ActionPerformed
+        int index = ((JComboBox) evt.getSource()).getSelectedIndex();
+        switch (index) {
+            case 0:
+                igrac2 = new JednostavanIgrac(difficultyPlayer2);
+                break;
+            case 1:
+                igrac2 = new AlfaBetaIgrac(difficultyPlayer2);
+                break;
+            case 2:
+                igrac2 = new Takmicar();
+                break;
+        }
+    }//GEN-LAST:event_aiType2ActionPerformed
 
     private void populatePilesDialog() {
         Integer []numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -591,6 +629,90 @@ public class Nim extends java.awt.Frame {
             piles.add(cb);
             pilesPanel.add(cb);
             board[i - 1] = i;
+        }
+    }
+    
+    private void playGame() {
+        game = new Game(Arrays.copyOf(board, board.length));
+        if (player1 == playerType.COMPUTER && igrac1 == null) {
+            igrac1 = new JednostavanIgrac(difficultyPlayer1);
+        }
+        if (player2 == playerType.COMPUTER && igrac2 == null) {
+            igrac2 = new JednostavanIgrac(difficultyPlayer2);
+        }
+        if (player1 == playerType.COMPUTER && player2 == playerType.COMPUTER) {
+            Thread r = new Thread() {
+                public void run() {
+                    aiVsAi();
+                }
+            };
+            for (int i = 0; i < 100; i++) {
+                buttons[i].setEnabled(false);
+            }
+            r.start();
+        }
+        else if (player1 == playerType.COMPUTER || player2 == playerType.COMPUTER) {
+            Thread r = new Thread() {
+                public void run() {
+                    humanVsAi();
+                }
+            };
+            r.start();
+        }
+    }
+    
+    private void aiVsAi() {
+        firstTurn = true;
+        turnLabel.setText("Igrac 1");
+        while (!game.isOver()) {
+            try {
+                Thread.sleep(2000);
+                Move move;
+                if (firstTurn) {
+                    move = igrac1.makeMove(game);
+                }
+                else {
+                    move = igrac2.makeMove(game);
+                }
+                //firstTurn = !firstTurn;
+                simulateMove(move);
+                //Thread.sleep(500);
+                //turnLabel.setText((firstTurn ? "Igrac 1" : "Igrac 2"));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void humanVsAi() {
+        firstTurn = true;
+        final boolean human = (player1 == playerType.HUMAN);
+        turnLabel.setText("Igrac 1");
+        if (!human) {
+            for (int i = 0; i < 100; i++) {
+                buttons[i].setEnabled(false);
+            }
+        }
+        while (!game.isOver()) {
+            for (int i = 0; i < 100; i++) {
+                buttons[i].setEnabled(firstTurn == human);
+            }
+        }
+    }
+    
+    private void simulateMove(Move move) {
+        int index = move.getPos() + 90 - 10 * (game.board[move.getPos()] - move.getNumDiscs());
+        buttons[index].setEnabled(true);
+        buttons[index].doClick();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -640,41 +762,88 @@ public class Nim extends java.awt.Frame {
                 move = null;
             }
             else {
-                game.makeMove(move);
                 int indexColor = Integer.parseInt(btn.getName());
                 int indexHide = indexColor;
                 while (indexColor >= 0 && buttons[indexColor].isVisible()) {
-                    buttons[indexColor].setForeground(Color.YELLOW);
-                    buttons[indexColor].setBackground(Color.YELLOW);
+                    final JButton jbtn = buttons[indexColor];
+                    Thread r = new Thread() {
+                        public void run() {
+                            flashButton(jbtn, Color.YELLOW);
+                        }
+                    };
+                    r.start();
                     indexColor -= 10;
                 }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                while (index >= 0 && buttons[index].isVisible()) {
-                    buttons[index].setForeground(Color.red);
-                    buttons[index].setBackground(Color.red);
-                    index -= 10;
-                }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 while (indexHide > 0 && buttons[indexHide].isVisible()) {
-                    buttons[indexHide].setVisible(false);
+                    final JButton jbtn = buttons[indexHide];
+                    Thread r = new Thread() {
+                        public void run() {
+                            hideButton(jbtn);
+                        }
+                    };
+                    r.start();
                     indexHide -= 10;
-                    try {
-                    Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                    Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                firstTurn = !firstTurn;
+                String text = (firstTurn ? "Igrac 1" : "Igrac 2");
+                Thread t = new Thread() {
+                    public void run() {
+                        setTurnLabel(text);
                     }
+                };
+                t.start();
+                synchronized(this) {
+                    notifyAll();
+                }
+                game.makeMove(move);
+                if (game.isOver()) {
+                    Thread r = new Thread() {
+                        public void run() {
+                            setTurnLabel("");
+                        }
+                    };
+                    r.start();
+                    JOptionPane.showMessageDialog(null, "Pobedio je igrac " + (firstTurn ? "2" : "1"));
                 }
             }
         }   
     }
+    
+    private void setTurnLabel(String text) {
+        turnLabel.setText(text);
+    }
+    
+    private void hideButton(JButton btn) {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btn.setVisible(false);
+    }
+        
+    private void flashButton(JButton btn, Color color) {
+        Color origColor = btn.getForeground();
+        
+        btn.setBackground(color);
+        btn.setForeground(color);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btn.setBackground(origColor);
+        btn.setForeground(origColor);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Nim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btn.setBackground(color);
+        btn.setForeground(color);
+    }
+    
     
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -685,21 +854,25 @@ public class Nim extends java.awt.Frame {
     }
     private enum playerType { COMPUTER, HUMAN };
     private enum difficulty { EASY, MEDIUM, HARD};
+    private enum computerType { MINIMAX, ALFABETA, TAKMICAR };
     private int numberOfPiles = 1;
     private int numberOfDiscs = 1;
     private int difficultyPlayer1 = 3;
     private int difficultyPlayer2 = 3;
     private playerType player1 = playerType.COMPUTER;
     private playerType player2 = playerType.COMPUTER;
+    private computerType type1 = computerType.MINIMAX;
+    private computerType type2 = computerType.MINIMAX;
     private int[] board;
     private List<JComboBox<Integer>> piles;
     private ComboListener cmbListener;
     private JButton[] buttons;
     private ButtonListener btnListener;
     private Game game;
-    private Igrac igrac1;
-    private Igrac igrac2;
+    private Igrac igrac1 = null;
+    private Igrac igrac2 = null;
     private Move move;
+    private boolean firstTurn = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> aiType1;
     private javax.swing.JComboBox<String> aiType2;
@@ -717,7 +890,6 @@ public class Nim extends java.awt.Frame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -734,6 +906,6 @@ public class Nim extends java.awt.Frame {
     private javax.swing.JPanel pilesPanel;
     private javax.swing.ButtonGroup player1Group;
     private javax.swing.ButtonGroup player2Group;
+    private javax.swing.JLabel turnLabel;
     // End of variables declaration//GEN-END:variables
-
 }

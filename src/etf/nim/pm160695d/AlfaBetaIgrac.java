@@ -16,6 +16,7 @@ public class AlfaBetaIgrac implements Igrac {
         return maxDepth;
     }
 
+    @Override
     public Move makeMove(Game g) {
         int lastMove = g.getLastMove();
         int alpha = -2000;

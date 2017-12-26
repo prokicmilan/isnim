@@ -10,6 +10,7 @@ public class Takmicar implements Igrac {
         return 0;
     }
 
+    @Override
     public Move makeMove(Game g) {
         Game currentState = new Game(Arrays.copyOf(g.board, g.board.length), g.lastMove);
         if (knownStates.containsKey(currentState) && knownStates.get(currentState).getValue() == 100) {
