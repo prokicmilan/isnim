@@ -3,20 +3,21 @@ package etf.nim.pm160695d;
 /**
  * Created by Proka on 12/22/2017.
  */
-public class JednostavanIgrac implements Igrac {
+public class JednostavanIgrac extends Igrac {
+    /**
+     * 
+     * @param maxDepth maksimalna dubina pretrage stabla
+     */
     public JednostavanIgrac(int maxDepth) {
-        this.maxDepth = maxDepth;
-    }
-
-    @Override
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
-    public void setMaxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
+        super(maxDepth);
     }
     
+    /**
+     * Koristi minimax algoritam da odredi optimalan potez za dato stanje na 
+     * tabli. Garantuje vraćanje validnog poteza.
+     * @param g trenutno stanje na tabli
+     * @return optimalan potez za dato stanje na tabli
+     */
     @Override
     public Move makeMove(Game g) {
         int bestResult = -2000;
@@ -51,17 +52,29 @@ public class JednostavanIgrac implements Igrac {
         return bestMove;
     }
 
-    private int maxDepth;
-
+    /**
+     * Minimax algoritam koji vraća vrednost optimalnog poteza.
+     * Ukoliko dostigne terminalno stanje, vraća kodiranu vrednost u zavisnosti
+     * od pozivaoca
+     * Ukoliko dostigne maksimalnu dubinu pretrage stabla, vraća vrednost 
+     * statičke funkcije procene na toj dubini.
+     * Ukoliko ispita sve moguće poteze, vraća vrednost optimalnog.
+     * @param g trenutno stanje na tabli
+     * @param depth trenutna dubina pretrage stabla
+     * @param lastMove broj žetona skinutih u prethodnom potezu
+     * @param isMax <code>true</code> ako je pozivaoc maksimizer, <code>false</code>
+     * u suprotnom
+     * @return vrednost optimalnog poteza za zadato stanje
+     */
     private int minimax(Game g, int depth, int lastMove, boolean isMax) {
         if (g.isOver()) {
             return isMax ? -100 : 100;
         }
-        int sum = 0;
-        for (int discs : g.board) {
-            sum = sum ^ discs;
-        }
         if (depth == maxDepth) {
+            int sum = 0;
+            for (int discs : g.board) {
+                sum = sum ^ discs;
+            }
             return sum;
         }
         int bestResult = (isMax ? -2000 : 2000);

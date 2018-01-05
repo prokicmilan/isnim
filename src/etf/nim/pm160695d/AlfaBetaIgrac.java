@@ -6,16 +6,21 @@ import java.util.Set;
 /**
  * Created by Proka on 12/22/2017.
  */
-public class AlfaBetaIgrac implements Igrac {
+public class AlfaBetaIgrac extends Igrac {
+    /**
+     * 
+     * @param maxDepth maksimalna dubina pretrage stabla
+     */
     public AlfaBetaIgrac(int maxDepth) {
-        this.maxDepth = maxDepth;
+        super(maxDepth);
     }
 
-    @Override
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
+    /**
+     * Koristi minimax algoritam sa alfa beta odsecanjem da odredi optimalan
+     * potez za dato stanje na tabli. Garantuje vraćanje optimalnog poteza.
+     * @param g trenutno stanje na tabli
+     * @return optimalan potez za dato stanje na tabli
+     */
     @Override
     public Move makeMove(Game g) {
         int lastMove = g.getLastMove();
@@ -51,17 +56,34 @@ public class AlfaBetaIgrac implements Igrac {
         return bestMove;
     }
 
-    private int maxDepth;
-
+    /**
+     * Minimax algoritam sa alfa beta odsecanjem koji vraća vrednost optimalnog
+     * poteza.
+     * Ukoliko dostigne terminalno stanje, vraća kodiranu vrednost u zavisnosti 
+     * od pozivaoca.
+     * Ukoliko dostigne maksimalnu dubinu pretrage stabla, vraća vrednost
+     * statičke funkcije procene na toj dubini.
+     * Ukoliko ispita sve moguće poteze, vraća vrednost optimalnog.
+     * Ukoliko u nekom trenutku dođe do preklapanja vrednosti alpha i beta
+     * parametara, vrši se odsecanje i vraća se do tada nađena najbolja vrednost.
+     * @param g trenutno stanje na tabli
+     * @param lastMove broj žetona skinutih u prethodnom potezu
+     * @param depth trenutna dubina pretrage stabla
+     * @param alpha vrednost ispod koje maksimizer neće ići
+     * @param beta vrednost iznad koje minimizer neće ići
+     * @param isMax <code>true</code> ako je pozivaoc maksimizer, <code>false</code>
+     * u suprotnom
+     * @return vrednost optimalnog poteza za zadato stanje
+     */
     private int minimax(Game g, int lastMove, int depth, int alpha, int beta, boolean isMax) {
         if (g.isOver()) {
             return isMax ? -100 : 100;
         }
-        int sum = 0;
-        for (int discs : g.board) {
-            sum ^= discs;
-        }
         if (depth == maxDepth) {
+            int sum = 0;
+            for (int discs : g.board) {
+                sum ^= discs;
+            }
             return sum;
         }
         int bestResult = (isMax ? -2000 : 2000);

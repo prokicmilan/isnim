@@ -603,6 +603,7 @@ public class Nim extends java.awt.Frame {
     
     private void playGame() {
         game = new Game(Arrays.copyOf(board, board.length));
+        firstTurn = true;
         if (player1 == playerType.COMPUTER && igrac1 == null) {
             igrac1 = new JednostavanIgrac(difficultyPlayer1);
         }
@@ -615,7 +616,7 @@ public class Nim extends java.awt.Frame {
                     aiVsAi();
                 }
             };
-            changeButtons(false);
+            changeButtonsStatus(false);
             r.start();
         }
         if (gType == gameType.HvM) {
@@ -631,7 +632,6 @@ public class Nim extends java.awt.Frame {
     }
     
     private void aiVsAi() {
-        firstTurn = true;
         turnLabel.setText("Igrac 1");
         while (!game.isOver()) {
             try {
@@ -666,14 +666,14 @@ public class Nim extends java.awt.Frame {
             if (player1 == playerType.COMPUTER) {
                 move = igrac1.makeMove(game);
                 simulateMove(move);
-                changeButtons(true);
+                changeButtonsStatus(true);
             }
         }
         else {
             if (player2 == playerType.COMPUTER) {
                 move = igrac2.makeMove(game);
                 simulateMove(move);
-                changeButtons(true);
+                changeButtonsStatus(true);
             }
         }
     }
@@ -771,7 +771,7 @@ public class Nim extends java.awt.Frame {
                 }
                 game.makeMove(move);
                 if (gType == gameType.HvM) {
-                    changeButtons(false);
+                    changeButtonsStatus(false);
                     Thread r = new Thread() {
                         public void run() {
                             humanVsAi();
@@ -792,7 +792,7 @@ public class Nim extends java.awt.Frame {
         }   
     }
     
-    private void changeButtons(boolean enabled) {
+    private void changeButtonsStatus(boolean enabled) {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setEnabled(enabled);
         }

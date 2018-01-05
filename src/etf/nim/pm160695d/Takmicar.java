@@ -4,12 +4,26 @@ package etf.nim.pm160695d;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Takmicar implements Igrac {
-    @Override
-    public int getMaxDepth() {
-        return 0;
+/**
+ * Created by Proka on 12/22/2017.
+ */
+public class Takmicar extends Igrac {
+    public Takmicar() {
+        super(-1);
     }
 
+    /**
+     * Određuje optimalan potez koristeći činjenicu da su stanja sa istim brojem
+     * žetona na stubovima i istim brojem žetona skinutim u prethodnom potezu 
+     * identična, nezavisno od rasporeda žetona. Stablo se pretražuje samo za
+     * stanja koja nisu ranije obrađena, pri čemu se po otkriću optimalnog
+     * poteza dato stanje i njemu pridružen optimalni potez čuvaju u
+     * odgovarajućoj strukturi. Ukoliko je stanje već obrađeno, uzima se njemu
+     * pridružen optimalni potez. Ukoliko se u nekom trenutku do korena propagira
+     * pobeda za pozivaoca, pretraga se prekida jer se ne može naći bolji rezultat.
+     * @param g trenutno stanje na tabli
+     * @return 
+     */
     @Override
     public Move makeMove(Game g) {
         Game currentState = new Game(Arrays.copyOf(g.board, g.board.length), g.lastMove);
@@ -123,6 +137,12 @@ public class Takmicar implements Igrac {
         return bestResult;
     }
 
+    /**
+     * Vraća poziciju stuba u sortiranom poretku
+     * @param discsOnPile broj diskova na stubu
+     * @param state stanje na tabli
+     * @return pozicija stuba u sortiranom poretku
+     */
     private int findSortedPos(int discsOnPile, Game state) {
         int []sortedBoard = state.getBoard();
 
